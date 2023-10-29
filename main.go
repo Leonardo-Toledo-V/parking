@@ -15,6 +15,4 @@ func main() {
 	w.Resize(fyne.NewSize(800, 600))
 	screens.NewScene(w)
 	w.ShowAndRun()
-
-
 }

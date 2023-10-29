@@ -7,7 +7,7 @@ import (
 
 type Parking struct {
 	Space chan bool
-	DrawCar chan *canvas.Image
+	DrawVehicle chan *canvas.Image
 	mutex sync.Mutex
 }
 
@@ -15,6 +15,6 @@ type Parking struct {
 func NewParking(nS int) *Parking {
 	return &Parking{
 		Space: make(chan bool, nS+1),
-		DrawCar: make(chan *canvas.Image,1),
+		DrawVehicle: make(chan *canvas.Image,1),
 	}
 }

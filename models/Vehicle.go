@@ -50,15 +50,15 @@ func (v *Vehicle) RunVehicle() {
 func GenerateVehicle(n int, parking *Parking) {
 	parking.Space <- true
 	for i := 0; i < n; i++ {
-		VehicleImg := canvas.NewImageFromURI( storage.NewFileURI("./assets/carro.png") )
-		VehicleImg.Resize(fyne.NewSize(100,100))
+		VehicleImg := canvas.NewImageFromURI( storage.NewFileURI("./assets/vehicle.png") )
+		VehicleImg.Resize(fyne.NewSize(50,100))
 		x := rand.Intn(700-100+1) + 1
 		VehicleImg.Move( fyne.NewPos(float32(x), 500) )
 
 		NewVehicle := NewVehicle(parking, VehicleImg)
 		NewVehicle.I = i + 1
 
-		parking.DrawCar <- VehicleImg
+		parking.DrawVehicle <- VehicleImg
 		go NewVehicle.RunVehicle()
 		Wait := rand.Intn(700-100+1) + 1
 		time.Sleep(time.Duration(Wait) * time.Millisecond)

@@ -1,6 +1,7 @@
 package screens
 
 import (
+	"parking/models"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -18,9 +19,14 @@ func NewScene(window fyne.Window) *GameScene {
     scene.Render()
     return scene
 }
+func (s *GameScene) StartGame() {
+	e := models.NewParking(20)
+	go models.GenerateVehicle(100, e)
+	go s.DrawVehicles(e)
+}
 
 func (s *GameScene) Render() {
-	backgroundImage := canvas.NewImageFromURI( storage.NewFileURI("./assets/bg.png") )
+	backgroundImage := canvas.NewImageFromURI( storage.NewFileURI("./assets/parking.png") )
     backgroundImage.Resize(fyne.NewSize(800,600))
 	backgroundImage.Move( fyne.NewPos(0,0) )
 
@@ -28,5 +34,15 @@ func (s *GameScene) Render() {
         backgroundImage, // Fondo
     )
     s.window.SetContent(s.content) 
-    /* models.StartGame() */
+    s.StartGame()
+}
+
+
+
+func (s *GameScene) DrawVehicles(e *models.Parking) {
+	for {
+		imagen := <- e.DrawVehicle
+		s.content.Add(imagen)
+        s.window.Canvas().Refresh(s.content)
+	}
 }
