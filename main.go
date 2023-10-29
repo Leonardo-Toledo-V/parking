@@ -1,13 +1,20 @@
 package main
 
 import (
-    "parking/controllers"
+    "parking/screens"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
 )
 
 func main() {
-    vehicleController := controllers.NewVehicleController()
-    numVehicles := 100
-    poissonLambda := 1.0
+	a := app.New()
+	w := a.NewWindow("Parking")
 
-    vehicleController.CreateVehicles(numVehicles, poissonLambda)
+	w.CenterOnScreen()
+	w.SetFixedSize(true)
+	w.Resize(fyne.NewSize(800, 600))
+	screens.NewScene(w)
+	w.ShowAndRun()
+
+
 }
