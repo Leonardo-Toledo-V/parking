@@ -24,12 +24,9 @@ func NewVehicle(p *Parking, s *canvas.Image) *Vehicle {
 
 
 func (v *Vehicle) RunVehicle() {
-
 	v.parking.Space <- true
 	v.parking.mutex.Lock()
-		x := float32( rand.Intn(650-150+1) )
-		y := float32( rand.Intn(300-50+1) )
-		v.skin.Move(fyne.NewPos( x, y ))
+		v.skin.Move(fyne.NewPos( 700,230 ))
 		fmt.Println("Carro ", v.I, " Entra")
 		time.Sleep(200 *time.Millisecond)
 	v.parking.mutex.Unlock()
@@ -39,7 +36,7 @@ func (v *Vehicle) RunVehicle() {
 
 	v.parking.mutex.Lock()
 		<- v.parking.Space
-		v.skin.Move(fyne.NewPos( 0,0 ))
+		v.skin.Move(fyne.NewPos( 10000,10000 ))
 		fmt.Println("Carro ", v.I, " Sale")
 		time.Sleep(200 *time.Millisecond)
         v.parking.mutex.Unlock()

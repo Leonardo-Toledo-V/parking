@@ -31,7 +31,7 @@ func (s *GameScene) Render() {
 	backgroundImage.Move( fyne.NewPos(0,0) )
 
 	s.content = container.NewWithoutLayout(
-        backgroundImage, // Fondo
+        backgroundImage,
     )
     s.window.SetContent(s.content) 
     s.StartGame()
