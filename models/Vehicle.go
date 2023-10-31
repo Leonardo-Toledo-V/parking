@@ -36,9 +36,9 @@ func (v *Vehicle) RunVehicle() {
 				break
 			}
 		}
-	
+
 		fmt.Println("vehicle ", v.I, " enters")
-		time.Sleep(1 *time.Millisecond)
+		time.Sleep(300 *time.Millisecond)
 		v.parking.mutex.Unlock()
 
 		randomSleepSeconds := rand.Intn(20) + 6
@@ -49,8 +49,9 @@ func (v *Vehicle) RunVehicle() {
 		v.parking.ParkingSpaces[v.ParkingSpace].occupied = false
 		v.skin.Move(fyne.NewPos( 460,45 ))
 		fmt.Println("vehicle ", v.I, "exit")
-		time.Sleep(1 *time.Millisecond)
+		time.Sleep(300 *time.Millisecond)
         v.parking.mutex.Unlock()
+		v.skin.Move(fyne.NewPos( 460000,45000 ))
 }
 
 
@@ -58,7 +59,7 @@ func (v *Vehicle) RunVehicle() {
 func GenerateVehicle(n int, parking *Parking) {
 	parking.Space <- true
 	for i := 0; i < n; i++ {
-		randomVehicleNumber := rand.Intn(7) + 1
+		randomVehicleNumber := rand.Intn(8) + 1
 		vehicleImageName := fmt.Sprintf("./assets/vehicle%d.png", randomVehicleNumber)
 
         VehicleImg := canvas.NewImageFromURI(storage.NewFileURI(vehicleImageName))
