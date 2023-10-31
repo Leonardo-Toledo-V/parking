@@ -12,6 +12,7 @@ import (
 type Vehicle struct {
     parking *Parking
 	I               int
+	ParkingSpace int
 	skin			*canvas.Image
 }
 
@@ -25,17 +26,27 @@ func NewVehicle(p *Parking, s *canvas.Image) *Vehicle {
 
 func (v *Vehicle) RunVehicle() {
 	v.parking.Space <- true
-	v.parking.mutex.Lock()
-		v.skin.Move(fyne.NewPos( 700,230 ))
+	v.parking.mutex.Lock()	
+		for i := 0; i < len(v.parking.ParkingSpaces); i++ {
+			if !v.parking.ParkingSpaces[i].occupied{
+				v.skin.Move(fyne.NewPos(v.parking.ParkingSpaces[i].x, v.parking.ParkingSpaces[i].y))
+				v.skin.Refresh()
+				v.ParkingSpace = i
+				v.parking.ParkingSpaces[i].occupied = true
+				break
+			}
+		}
+	
 		fmt.Println("Carro ", v.I, " Entra")
-		time.Sleep(200 *time.Millisecond)
-	v.parking.mutex.Unlock()
+		time.Sleep(300 *time.Millisecond)
+		v.parking.mutex.Unlock()
 
-	Wait := rand.Intn(5-1+1) + 1
-	time.Sleep(time.Duration(Wait) * time.Second)
+		Wait := rand.Intn(5-1+1) + 1
+		time.Sleep(time.Duration(Wait) * time.Second)
 
 	v.parking.mutex.Lock()
 		<- v.parking.Space
+		v.parking.ParkingSpaces[v.ParkingSpace].occupied = false
 		v.skin.Move(fyne.NewPos( 10000,10000 ))
 		fmt.Println("Carro ", v.I, " Sale")
 		time.Sleep(200 *time.Millisecond)
@@ -49,15 +60,14 @@ func GenerateVehicle(n int, parking *Parking) {
 	for i := 0; i < n; i++ {
 		VehicleImg := canvas.NewImageFromURI( storage.NewFileURI("./assets/vehicle.png") )
 		VehicleImg.Resize(fyne.NewSize(50,100))
-		x := rand.Intn(700-100+1) + 1
-		VehicleImg.Move( fyne.NewPos(float32(x), 500) )
+		VehicleImg.Move(fyne.NewPos(120, 500))
 
 		NewVehicle := NewVehicle(parking, VehicleImg)
 		NewVehicle.I = i + 1
 
 		parking.DrawVehicle <- VehicleImg
+		time.Sleep(time.Millisecond*100)
 		go NewVehicle.RunVehicle()
-		Wait := rand.Intn(700-100+1) + 1
-		time.Sleep(time.Duration(Wait) * time.Millisecond)
+		time.Sleep(time.Duration(rand.ExpFloat64() * float64(time.Second)))
 	}
 }
