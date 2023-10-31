@@ -26,7 +26,7 @@ func NewVehicle(p *Parking, s *canvas.Image) *Vehicle {
 
 func (v *Vehicle) RunVehicle() {
 	v.parking.Space <- true
-	v.parking.mutex.Lock()	
+	v.parking.mutex.Lock();	
 		for i := 0; i < len(v.parking.ParkingSpaces); i++ {
 			if !v.parking.ParkingSpaces[i].occupied{
 				v.skin.Move(fyne.NewPos(v.parking.ParkingSpaces[i].x, v.parking.ParkingSpaces[i].y))
@@ -36,21 +36,19 @@ func (v *Vehicle) RunVehicle() {
 				break
 			}
 		}
-
 		fmt.Println("vehicle ", v.I, " enters")
-		time.Sleep(300 *time.Millisecond)
-		v.parking.mutex.Unlock()
+	v.parking.mutex.Unlock()
 
-		randomSleepSeconds := rand.Intn(20) + 6
-		time.Sleep(time.Duration(randomSleepSeconds) * time.Second)
+		randomSleepSeconds := rand.Intn(30) + 5
+		time.Sleep(time.Duration(randomSleepSeconds) * time.Second) // Tiempo que espera en el parking
 
 	v.parking.mutex.Lock()
 		<- v.parking.Space
 		v.parking.ParkingSpaces[v.ParkingSpace].occupied = false
 		v.skin.Move(fyne.NewPos( 460,45 ))
 		fmt.Println("vehicle ", v.I, "exit")
-		time.Sleep(300 *time.Millisecond)
-        v.parking.mutex.Unlock()
+		time.Sleep(300 *time.Millisecond) //Tiempo que espera en la salida
+    v.parking.mutex.Unlock()
 		v.skin.Move(fyne.NewPos( 460000,45000 ))
 }
 
@@ -70,7 +68,7 @@ func GenerateVehicle(n int, parking *Parking) {
 		NewVehicle.I = i + 1
 
 		parking.DrawVehicle <- VehicleImg
-		time.Sleep(time.Millisecond*1)
+		time.Sleep(time.Millisecond*400)
 		go NewVehicle.RunVehicle()
 		time.Sleep(time.Duration(rand.ExpFloat64() * float64(time.Second)))
 	}
