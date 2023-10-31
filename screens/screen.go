@@ -27,7 +27,7 @@ func (s *GameScene) StartGame() {
 
 func (s *GameScene) Render() {
 	backgroundImage := canvas.NewImageFromURI( storage.NewFileURI("./assets/parking.png") )
-    backgroundImage.Resize(fyne.NewSize(800,600))
+    backgroundImage.Resize(fyne.NewSize(1000,800))
 	backgroundImage.Move( fyne.NewPos(0,0) )
 
 	s.content = container.NewWithoutLayout(

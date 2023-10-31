@@ -47,7 +47,7 @@ func (v *Vehicle) RunVehicle() {
 	v.parking.mutex.Lock()
 		<- v.parking.Space
 		v.parking.ParkingSpaces[v.ParkingSpace].occupied = false
-		v.skin.Move(fyne.NewPos( 10000,10000 ))
+		v.skin.Move(fyne.NewPos( 460,45 ))
 		fmt.Println("Carro ", v.I, " Sale")
 		time.Sleep(200 *time.Millisecond)
         v.parking.mutex.Unlock()
@@ -59,14 +59,14 @@ func GenerateVehicle(n int, parking *Parking) {
 	parking.Space <- true
 	for i := 0; i < n; i++ {
 		VehicleImg := canvas.NewImageFromURI( storage.NewFileURI("./assets/vehicle.png") )
-		VehicleImg.Resize(fyne.NewSize(50,100))
-		VehicleImg.Move(fyne.NewPos(120, 500))
+		VehicleImg.Resize(fyne.NewSize(70,120))
+		VehicleImg.Move(fyne.NewPos(460, 650))
 
 		NewVehicle := NewVehicle(parking, VehicleImg)
 		NewVehicle.I = i + 1
 
 		parking.DrawVehicle <- VehicleImg
-		time.Sleep(time.Millisecond*100)
+		time.Sleep(time.Millisecond*200)
 		go NewVehicle.RunVehicle()
 		time.Sleep(time.Duration(rand.ExpFloat64() * float64(time.Second)))
 	}

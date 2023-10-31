@@ -12,7 +12,7 @@ func main() {
 
 	w.CenterOnScreen()
 	w.SetFixedSize(true)
-	w.Resize(fyne.NewSize(800, 600))
+	w.Resize(fyne.NewSize(1000, 800))
 	screens.NewScene(w)
 	w.ShowAndRun()
 }
